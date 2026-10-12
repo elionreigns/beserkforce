@@ -574,6 +574,7 @@ class Runtime:
         jobs = self.jobs()
         approvals = self.store.read("approvals.json", [])
         outcomes = self.store.read("outcomes.json", [])
+        providers = discover_providers()
         return {
             "ok": True,
             "name": "BeserkForce",
@@ -587,7 +588,7 @@ class Runtime:
             "approvals": approvals,
             "funnel": self.store.read("funnel.json", {}),
             "outcomes": outcomes,
-            "providers": discover_providers(),
+            "providers": providers,
             "primaryBrain": self.brain.identity(),
             "brains": self.brains_status(),
             "chat": self.chat_history(40),
@@ -596,7 +597,7 @@ class Runtime:
                 "openJobs": sum(job["state"] not in TERMINAL_STATES for job in jobs),
                 "pendingApprovals": sum(item["status"] == "pending" for item in approvals),
                 "verifiedOutcomes": sum(item["status"] == "verified" for item in outcomes),
-                "installedProviders": sum(item["installed"] for item in discover_providers()),
+                "installedProviders": sum(item["installed"] for item in providers),
             },
             "authority": "External actions require Eric's exact approval and a matching action hash.",
         }

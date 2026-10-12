@@ -19,8 +19,11 @@ RUNTIME = Runtime()
 
 
 def health() -> dict:
-    state = RUNTIME.status()
-    return {key: state[key] for key in ("ok", "name", "stage", "version", "deviceId", "time", "authority")}
+    return {
+        "ok": True, "name": "BeserkForce", "stage": "nerves-online",
+        "version": "0.2.0", "deviceId": RUNTIME.device_id, "time": RUNTIME.now(),
+        "authority": "External actions require Eric's exact approval and a matching action hash.",
+    }
 
 
 class Handler(BaseHTTPRequestHandler):
