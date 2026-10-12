@@ -1,0 +1,6 @@
+{
+  "deviceId": "laptop",
+  "label": "Laptop conductor",
+  "sharedStatePath": "data/runtime"
+}
+

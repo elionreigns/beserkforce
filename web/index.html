@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090a0d">
+  <title>BeserkForce Command Core</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <aside class="chat-sidebar" aria-label="Saved chats">
+    <div class="chat-sidebar-head">
+      <strong>Chats</strong>
+      <button id="chat-new-side" type="button">+ New</button>
+    </div>
+    <ul id="chat-list" class="chat-list"></ul>
+  </aside>
+
+  <header class="hero">
+    <img src="/assets/beserkforce-command-core.png" alt="Golden lion commanding a verified Oahu flight network">
+    <div class="hero-shade"></div>
+    <div class="hero-copy">
+      <p class="eyebrow">WORKFORCE / BESERKFORCE</p>
+      <h1>Command the work.<br><span>Prove the result.</span></h1>
+      <p>Provider-neutral agents, exact approvals, evidence-backed outcomes.</p>
+      <div id="brain-chip" class="brain-chip"><span>PRIMARY BRAIN</span><b>CODEX</b><small>checking local adapter…</small></div>
+      <div class="status-line"><i id="pulse"></i><strong id="runtime-status">Connecting…</strong><span id="runtime-detail"></span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="headline">
+      <div><p class="eyebrow">COMMAND CORE</p><h2 id="campaign-name">Loading campaign…</h2></div>
+      <div class="headline-actions"><p id="campaign-purpose">Reading the evidence contract.</p><button id="demo-button" type="button">Run safety demonstration</button></div>
+    </section>
+
+    <section class="stats" aria-label="Runtime summary">
+      <article><strong id="stat-jobs">—</strong><span>Open jobs</span></article>
+      <article><strong id="stat-approvals">—</strong><span>Pending approvals</span></article>
+      <article><strong id="stat-providers">—</strong><span>Installed providers</span></article>
+      <article><strong id="stat-outcomes">—</strong><span>Verified sales</span></article>
+    </section>
+
+    <section class="command-grid">
+      <div class="wide panel"><div class="panel-head"><div><p class="eyebrow">LIVE FUNNEL</p><h2>Truth before tactics</h2></div><span id="bottleneck" class="badge">—</span></div><div id="funnel" class="funnel"></div></div>
+      <div class="panel"><div class="panel-head"><div><p class="eyebrow">PROVIDERS</p><h2>Detected seats</h2></div></div><div id="providers" class="list"></div></div>
+      <div class="wide panel"><div class="panel-head"><div><p class="eyebrow">JOB BOARD</p><h2>Hawaii Flight Growth</h2></div><span class="quiet">Roles 50–54</span></div><div id="jobs" class="jobs"></div></div>
+      <div class="panel"><div class="panel-head"><div><p class="eyebrow">APPROVAL GATE</p><h2>Eric controls consequences</h2></div></div><div id="approvals" class="list"></div></div>
+      <div class="wide panel"><div class="panel-head"><div><p class="eyebrow">ROLE CLUSTER</p><h2>Five specialists, one outcome</h2></div></div><div id="roles" class="roles"></div></div>
+      <div class="panel"><div class="panel-head"><div><p class="eyebrow">EVENT LEDGER</p><h2>Recent proof trail</h2></div></div><div id="events" class="list events"></div></div>
+    </section>
+
+    <section class="coming"><p class="eyebrow">CONTROLLED FLOW</p><div class="pipeline"><span>DISCOVER</span><i></i><span>CLAIM</span><i></i><span>REVIEW</span><i></i><span>APPROVE</span><i></i><span>PROVE</span></div></section>
+
+    <section class="chat panel" aria-label="Conductor chat">
+      <div class="panel-head">
+        <div><p class="eyebrow">CONDUCTOR CHAT</p><h2>Talk to the CLI</h2></div>
+<div class="chat-controls">
+        <label>Brain <select id="chat-engine"></select></label>
+        <label class="chat-write"><input type="checkbox" id="chat-write" checked> allow edits</label>
+        </div>
+      </div>
+      <div id="chat-log" class="chat-log" aria-live="polite"><p class="empty">Ask the conductor brain about this runtime, or tell it what to inspect. It works inside BeserkForce only.</p></div>
+      <form id="chat-form" class="chat-form">
+        <textarea id="chat-input" rows="3" placeholder="e.g. Summarize what Codex built here and what is still missing"></textarea>
+        <button id="chat-send" type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
+

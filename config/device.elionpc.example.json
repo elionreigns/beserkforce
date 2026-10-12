@@ -1,0 +1,6 @@
+{
+  "deviceId": "elionpc",
+  "label": "ELION-PC execution seat",
+  "sharedStatePath": "data/runtime"
+}
+

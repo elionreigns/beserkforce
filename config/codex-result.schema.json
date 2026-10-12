@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["jobId", "summary", "artifactPath", "evidence", "nextState", "approvalRequired"],
+  "properties": {
+    "jobId": {"type": "string"},
+    "summary": {"type": "string"},
+    "artifactPath": {"type": ["string", "null"]},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "nextState": {"enum": ["review", "ready-for-human", "held", "blocked"]},
+    "approvalRequired": {"type": "boolean"}
+  }
+}
+

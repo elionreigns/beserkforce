@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "name": "BeserkForce",
+  "host": "127.0.0.1",
+  "port": 8877,
+  "timezone": "Pacific/Honolulu",
+  "workforceRoot": "..",
+  "roleRegistry": "../organizations/roles.json",
+  "organizationRegistry": "../organizations/organizations.json",
+  "deviceRegistry": "../agents/devices.json",
+  "agentRegistry": "../agents/registry.json",
+  "primaryBrain": {
+    "id": "codex-beserkforce",
+    "provider": "OpenAI Codex CLI",
+    "role": "conductor",
+    "sandbox": "workspace-write",
+    "externalActionMode": "exact-approval-required"
+  },
+  "approvalRequired": [
+    "outreach",
+    "publish",
+    "deploy",
+    "spend",
+    "book",
+    "account-change",
+    "git-push"
+  ]
+}
+

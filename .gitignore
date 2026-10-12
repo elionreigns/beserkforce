@@ -1,0 +1,9 @@
+.env
+config/device.local.json
+data/runtime/
+data/*.lock
+*.pyc
+__pycache__/
+.pytest_cache/
+
+*.log
