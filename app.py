@@ -116,7 +116,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="BeserkForce local workforce runtime")
     parser.add_argument("command", nargs="?", choices=["serve", "health", "status", "demo", "brain", "brains", "dispatch", "chat"], default="serve")
     parser.add_argument("job_id", nargs="?")
-    parser.add_argument("--engine", default="codex", help="brain engine for brain/dispatch/chat (codex or opencode)")
+    parser.add_argument("--engine", default="codex", help="brain engine for brain/dispatch/chat (codex, opencode, or grok)")
     parser.add_argument("--host", default=CONFIG["host"])
     parser.add_argument("--port", type=int, default=int(CONFIG["port"]))
     args = parser.parse_args()

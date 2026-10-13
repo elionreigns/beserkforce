@@ -43,8 +43,10 @@ function renderBrains(brains){
   if(current&&brains.some(brain=>brain.engine===current&&brain.installed))select.value=current;
   const chip=document.querySelector('.brain-chip');
   if(chip&&brains.length){
-    const primary=brains.find(brain=>brain.engine==='codex')||brains[0];
-    const ready=brains.filter(brain=>brain.installed).length;
+    const readyBrains=brains.filter(brain=>brain.installed);
+    const ready=readyBrains.length;
+    const title=chip.querySelector('b');
+    if(title)title.textContent=readyBrains.map(brain=>brain.name).join(' · ')||'NONE';
     chip.querySelector('small').textContent=ready+' of '+brains.length+' conductor brains ready';
     chip.classList.toggle('ready',ready>0);
   }

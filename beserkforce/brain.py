@@ -289,7 +289,102 @@ Return only the structured result required by config/codex-result.schema.json.
         return reply[-20000:]
 
 
-BRAIN_CLASSES: dict[str, type] = {"codex": CodexBrain, "opencode": OpenCodeBrain}
+class GrokBrain:
+    """Bounded internal-work adapter for the installed Grok CLI."""
+
+    DEFAULT_MODEL = "grok-4.7"
+
+    def __init__(self, root: Path, model: str = DEFAULT_MODEL):
+        self.root = root
+        self.executable = shutil.which("grok")
+        self.model = model
+        self.schema = root / "config" / "codex-result.schema.json"
+
+    def identity(self) -> dict[str, Any]:
+        return {
+            "id": "grok-beserkforce",
+            "name": "Grok",
+            "provider": "Grok CLI",
+            "role": "conductor brain",
+            "installed": bool(self.executable),
+            "path": self.executable,
+            "model": self.model,
+            "mode": "internal workspace-write; external actions remain approval-gated",
+            "capabilities": ["plan", "route", "code", "review", "verify", "chat", "produce internal artifacts"],
+        }
+
+    def prompt_for(self, job: dict[str, Any], role: dict[str, Any], output: Path | None = None) -> str:
+        prompt = f"""You are a conductor brain for BeserkForce.
+
+Execute this one bounded internal job inside the BeserkForce folder.
+
+{_job_header(job, role)}
+
+{AUTHORITY}
+
+Return only the structured result required by config/codex-result.schema.json.
+"""
+        if output is not None:
+            prompt += f"\nWrite that exact JSON object to this file path as well: {output}\n"
+        return prompt
+
+    def command_for(self, job: dict[str, Any], role: dict[str, Any], output: Path) -> list[str]:
+        if not self.executable:
+            raise RuntimeError("Grok CLI is not installed or not on PATH")
+        prompt_path = output.with_name(output.stem + ".grok-prompt.txt")
+        prompt_path.parent.mkdir(parents=True, exist_ok=True)
+        prompt_path.write_text(self.prompt_for(job, role, output), encoding="utf-8")
+        return [
+            self.executable,
+            "--cwd", str(self.root),
+            "--no-alt-screen",
+            "-m", self.model,
+            "--permission-mode", "bypassPermissions",
+            "--always-approve",
+            "--json-schema", str(self.schema),
+            "--prompt-file", str(prompt_path),
+        ]
+
+    def dispatch(self, job: dict[str, Any], role: dict[str, Any], output: Path, timeout: int = 900) -> dict[str, Any]:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        process = _run(self.command_for(job, role, output), self.root, None, timeout)
+        result: Any = None
+        try:
+            result = json.loads(output.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            result = None
+        if not isinstance(result, dict):
+            result = extract_json_object(_decode(process.stdout))
+        if not isinstance(result, dict):
+            raise RuntimeError((_decode(process.stderr) or _decode(process.stdout) or "Grok dispatch failed")[-4000:])
+        return result
+
+    def converse(self, message: str, write: bool = True, timeout: int = 900) -> str:
+        if not self.executable:
+            raise RuntimeError("Grok CLI is not installed or not on PATH")
+        prompts = self.root / "data" / "runtime" / "chat"
+        prompts.mkdir(parents=True, exist_ok=True)
+        prompt_path = prompts / "grok-prompt.txt"
+        prompt_path.write_text(message, encoding="utf-8")
+        command = [
+            self.executable,
+            "--cwd", str(self.root),
+            "--no-alt-screen",
+            "--output-format", "plain",
+            "-m", self.model,
+            "--permission-mode", "bypassPermissions" if write else "plan",
+        ]
+        if write:
+            command.append("--always-approve")
+        command.extend(["--prompt-file", str(prompt_path)])
+        process = _run(command, self.root, None, timeout)
+        reply = clean_reply(_decode(process.stdout))
+        if not reply:
+            raise RuntimeError((_decode(process.stderr) or _decode(process.stdout) or "Grok returned an empty reply")[-4000:])
+        return reply[-20000:]
+
+
+BRAIN_CLASSES: dict[str, type] = {"codex": CodexBrain, "opencode": OpenCodeBrain, "grok": GrokBrain}
 
 
 def build_brains(root: Path) -> dict[str, Any]:

@@ -55,10 +55,19 @@ class RuntimeTests(unittest.TestCase):
         self.assertIn("--auto", plan["command"])
         self.assertNotIn("danger-full-access", plan["command"])
 
-    def test_brains_registry_exposes_codex_and_opencode(self):
+    def test_brains_registry_exposes_codex_opencode_and_grok(self):
         engines = {brain["engine"] for brain in self.runtime.brains_status()}
-        self.assertEqual(engines, {"codex", "opencode"})
+        self.assertEqual(engines, {"codex", "opencode", "grok"})
         self.assertEqual(self.runtime.brain.identity()["role"], "primary conductor brain")
+
+    def test_grok_cli_is_a_bounded_brain(self):
+        plan = self.runtime.brain_plan("BF-HELI-50", engine="grok")
+        self.assertEqual(plan["engine"], "grok")
+        self.assertEqual(plan["brain"]["model"], "grok-4.7")
+        self.assertIn("--prompt-file", plan["command"])
+        self.assertIn("bypassPermissions", plan["command"])
+        self.assertIn("grok-4.7", plan["command"])
+        self.assertNotIn("danger-full-access", plan["command"])
 
     def test_unknown_engine_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "Unknown brain engine"):
@@ -70,7 +79,7 @@ class RuntimeTests(unittest.TestCase):
 
     def test_chat_rejects_unknown_engine_before_running(self):
         with self.assertRaisesRegex(ValueError, "Unknown brain engine"):
-            self.runtime.chat("hello", engine="grok")
+            self.runtime.chat("hello", engine="not-a-brain")
 
     def test_json_extraction_reads_last_object(self):
         from beserkforce.brain import extract_json_object

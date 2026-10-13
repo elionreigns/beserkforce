@@ -41,23 +41,27 @@ python app.py demo
 python app.py brains
 python app.py brain BF-HELI-50
 python app.py brain BF-HELI-50 --engine opencode
+python app.py brain BF-HELI-50 --engine grok
 # Explicit local dispatch, when desired:
 python app.py dispatch BF-HELI-50
 python app.py dispatch BF-HELI-50 --engine opencode
+python app.py dispatch BF-HELI-50 --engine grok
 # Chat with a conductor CLI inside the runtime (bounded to this folder):
 python app.py chat "Summarize what Codex built here and what is still missing"
 python app.py chat "Inspect the approval gate" --engine opencode
+python app.py chat "Inspect the approval gate" --engine grok
 python -m unittest discover -s tests -v
 ```
 
 The `demo` command exercises a complete internal lifecycle and performs no
 external action.
 
-Codex is the declared primary conductor brain. OpenCode is available as a
-second conductor brain via `--engine opencode`. `brain` previews the bounded
-command without execution. `dispatch` explicitly invokes the installed CLI with
-a workspace-write sandbox, structured output, and the BeserkForce authority
-boundary.
+Codex, OpenCode, and Grok are conductor brains. Codex is the default.
+Choose another with `--engine opencode` or `--engine grok`. Grok uses the
+local Grok CLI at model `grok-4.7`. `brain` previews the bounded command
+without execution. `dispatch` invokes the installed CLI inside this folder,
+with structured output and the BeserkForce authority boundary. The chat
+panel lists whichever of the three CLIs are installed.
 
 The dashboard at `http://127.0.0.1:8877` also has a **Conductor Chat** panel
 backed by `POST /api/chat` (`{message, engine, write}`) and `GET /api/brains`.
