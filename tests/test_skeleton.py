@@ -22,6 +22,12 @@ class SkeletonTests(unittest.TestCase):
         self.assertTrue(role_registry.is_file())
         self.assertNotIn(str(ROOT.resolve()), str(role_registry))
 
+    def test_launch_is_a_window_not_a_browser_port(self):
+        launcher = (ROOT / "Start-BeserkForce.ps1").read_text(encoding="utf-8")
+        self.assertIn("BeserkForce.pyw", launcher)
+        self.assertNotIn("Start-Process 'http://127.0.0.1:8877'", launcher)
+        self.assertTrue((ROOT / "BeserkForce.pyw").is_file())
+
 
 if __name__ == "__main__":
     unittest.main()

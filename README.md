@@ -10,7 +10,15 @@ source material and never rewrites the original WorkForce or GrokBot files.
 .\Start-BeserkForce.ps1
 ```
 
-Dashboard: `http://127.0.0.1:8877`
+That opens the BeserkForce window. It is a desktop app, the same pattern as
+Sermon Feed: `pythonw` plus a WebView2 frame, with its own taskbar name.
+The runtime stays on this machine at `127.0.0.1:8877` and is not a browser tab.
+
+First-time setup also installs the desktop shortcut:
+
+```powershell
+.\Install-BeserkForce-App.ps1
+```
 
 Stop it with:
 
